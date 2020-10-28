@@ -1,6 +1,6 @@
 
-from tkinter import Tk, W, E
-from tkinter.ttk import Frame, Button, Entry, Style
+from tkinter import Tk
+from tkinter.ttk import Frame, Button 
 import tkinter as tk
 from PIL import Image, ImageTk
 #Its not pretty but it add and removes from list displays the list and has a quit button
@@ -130,8 +130,8 @@ def getList(self):
 
 def main():
     root = Tk()
-    app = ShoppingCart()
     root.configure(background="black")
+    app = ShoppingCart()
     root.mainloop()
 
 if __name__ == '__main__':
