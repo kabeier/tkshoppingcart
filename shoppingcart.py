@@ -113,7 +113,7 @@ class ShoppingCart(Frame):
         sc.insert(tk.END, getList(self))
         sc.grid(row=2, column=5)
 
-        ar = tk.Button(self, text="Click start \r Removing", bg="darkblue", fg="white", font='Helvetica 18 bold', width=15, height=5, command=lambda: [addpress()])
+        ar = tk.Button(self, text="Click to start \r Removing", bg="darkblue", fg="white", font='Helvetica 18 bold', width=15, height=5, command=lambda: [addpress()])
         ar.grid(row=3, column=5)
 
         quit = tk.Button(self, text="QUIT", fg="black", bg="red", font='Helvetica 18 bold', command=self.master.destroy, width=10, height=5)
