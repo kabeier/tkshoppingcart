@@ -3,7 +3,7 @@ from tkinter import Tk, W, E
 from tkinter.ttk import Frame, Button, Entry, Style
 import tkinter as tk
 from PIL import Image, ImageTk
-#Its not pretty but it add and removes from list displays the list and have a quit button
+#Its not pretty but it add and removes from list displays the list and has a quit button
 
 class ShoppingCart(Frame):
     
@@ -116,7 +116,7 @@ class ShoppingCart(Frame):
         peas.image = image
         peas.grid(row=4, column=4)
 
-        sc = tk.Text(self, height=15, width=30)
+        sc = tk.Text(self, height=13, width=30)
         sc.insert(tk.END, getList(self))
         sc.grid(row=2, column=5)
 
