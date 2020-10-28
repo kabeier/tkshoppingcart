@@ -3,6 +3,10 @@ from tkinter import Tk
 from tkinter.ttk import Frame, Button 
 import tkinter as tk
 from PIL import Image, ImageTk
+import json
+import os.path
+from os import path
+
 #Its not pretty but it add and removes from list displays the list and has a quit button
 
 class ShoppingCart(Frame):
@@ -36,7 +40,7 @@ class ShoppingCart(Frame):
                     
 
         self.master.title("Kevin's Fried Rice Store")
-
+        restore(self)
         zuc = tk.Button(self, command=lambda:[shop("Zucchini"),press()])
         image = ImageTk.PhotoImage(file="zuc.gif")
         zuc.config(image=image, width=200, height=200, bg="black")
@@ -116,7 +120,7 @@ class ShoppingCart(Frame):
         ar = tk.Button(self, text="Click to start \r Removing", bg="darkblue", fg="white", font='Helvetica 18 bold', width=15, height=5, command=lambda: [addpress()])
         ar.grid(row=3, column=5)
 
-        quit = tk.Button(self, text="QUIT", fg="black", bg="red", font='Helvetica 18 bold', command=self.master.destroy, width=10, height=5)
+        quit = tk.Button(self, text="QUIT", fg="black", bg="red", font='Helvetica 18 bold', command=lambda:[save(self),self.master.destroy()], width=10, height=5)
         quit.grid(row=4, column=5)
 
         self.pack()
@@ -133,6 +137,18 @@ def main():
     root.configure(background="black")
     app = ShoppingCart()
     root.mainloop()
+
+def restore(self):
+    if path.isfile("save.json"):
+        with open("save.json", "r") as save_file:
+            data = json.load(save_file)
+            self.shoppinglist = data
+        pass
+
+def save(self):
+    with open("save.json", "w") as save_file:
+        json.dump(self.shoppinglist, save_file)
+
 
 if __name__ == '__main__':
     main()
