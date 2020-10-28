@@ -6,8 +6,6 @@ from PIL import Image, ImageTk
 #Its not pretty but it add and removes from list displays the list and has a quit button
 
 class ShoppingCart(Frame):
-    
-
     def __init__(self):
         super().__init__()
         self.shoppinglist = []
@@ -29,7 +27,6 @@ class ShoppingCart(Frame):
                 ar['text']="Click to Start \r Adding"
                 press()
 
-
         def shop(s):
             if(self.adding==True):
                 self.shoppinglist.append(s)
@@ -38,11 +35,7 @@ class ShoppingCart(Frame):
                     self.shoppinglist.remove(s)
                     
 
-
-
-
         self.master.title("Kevin's Fried Rice Store")
-
 
         zuc = tk.Button(self, command=lambda:[shop("Zucchini"),press()])
         image = ImageTk.PhotoImage(file="zuc.gif")
@@ -126,27 +119,20 @@ class ShoppingCart(Frame):
         quit = tk.Button(self, text="QUIT", fg="black", bg="red", font='Helvetica 18 bold', command=self.master.destroy, width=10, height=5)
         quit.grid(row=4, column=5)
 
-
-
         self.pack()
 
 
-
-    
 def getList(self):
-    items='You Shopping cart contains: \n'
+    items='Your Shopping Cart Contains: \n'
     for item in self.shoppinglist:
         items+= item + "\n"
     return items
 
 def main():
-
     root = Tk()
     app = ShoppingCart()
     root.configure(background="black")
     root.mainloop()
-
-
 
 if __name__ == '__main__':
     main()
