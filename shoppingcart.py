@@ -70,6 +70,7 @@ class ShoppingCart(Frame):
 
         self.master.title("Kevin's Fried Rice Store")
         restore(self)
+        
         make_items()
         make_item_buttons()
 
@@ -81,7 +82,6 @@ class ShoppingCart(Frame):
                        font='Helvetica 18 bold', width=10, height=5, command=lambda: [addpress()])
         ar.grid(row=3, column=5)
 
-
         quit = tk.Button(self, text="QUIT", fg="black", bg="red", font='Helvetica 18 bold', command=lambda: [
                          save(self), self.master.destroy()], width=10, height=5)
         quit.grid(row=4, column=5)
@@ -91,9 +91,18 @@ class ShoppingCart(Frame):
 
 def getList(self):
     items = 'Your Shopping Cart Contains: \n'
-
+    total=0
     for item in set(self.shoppinglist):
-        items += item + " [" + str(self.shoppinglist.count(item)) + "] \n"
+        price=0
+        for itemobj in self.itemlist:
+            if(item==itemobj.get_name()):
+                price = itemobj.get_price()
+        total += self.shoppinglist.count(item)*price
+        items += f"{item} [{self.shoppinglist.count(item)}] ${price*self.shoppinglist.count(item)} \n"
+    items+="-"*25 +"\n"
+    items+=f'Your total is ${total:,.2f}'
+
+
     return items
 
 
