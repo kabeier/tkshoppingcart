@@ -1,19 +1,23 @@
-
 from tkinter import Tk
-from tkinter.ttk import Frame, Button 
+from tkinter.ttk import Frame, Button
 import tkinter as tk
 from PIL import Image, ImageTk
 import json
 import os.path
 from os import path
-
+import csv
+from Item import Item
+import gc
 #Its not pretty but it add and removes from list displays the list and has a quit button
+
 
 class ShoppingCart(Frame):
     def __init__(self):
         super().__init__()
         self.shoppinglist = []
         self.adding = True
+        self.itemlist = []
+        self.notgarbage = []
         self.initUI()
 
 
@@ -23,114 +27,75 @@ class ShoppingCart(Frame):
             sc.insert(tk.END, getList(self))
 
         def addpress():
-            self.adding=not self.adding
-            if self.adding==True:
+            self.adding = not self.adding
+            if self.adding == True:
                 ar['text'] = "Click to Start \r Removing"
                 press()
             else:
-                ar['text']="Click to Start \r Adding"
+                ar['text'] = "Click to Start \r Adding"
                 press()
 
         def shop(s):
-            if(self.adding==True):
+            if(self.adding == True):
                 self.shoppinglist.append(s)
             else:
                 if s in self.shoppinglist:
                     self.shoppinglist.remove(s)
-                    
+        
+        def make_items():
+            with open('items.csv', newline='') as csvfile:
+                item_reader = csv.reader(csvfile, delimiter=',')
+                next(item_reader)
+                for row in item_reader:
+                    newitem=Item(row[0],row[1],row[2])
+                    self.itemlist.append(newitem)
+
+        def make_item_buttons():
+            row_position=2
+            col_position=1
+            i=2
+            but=tk.Button()
+            for newitem in self.itemlist:
+                if(col_position > 4):
+                    i+=1
+                    col_position=1
+                    row_position=i
+                but = tk.Button(self, name=newitem.get_name().lower(), command=lambda i=newitem.get_name():[ shop(i),press()])
+                but.config(image=newitem.get_tkImage(), width=200, height=200, bg="black")
+                but.image = newitem.get_tkImage()
+                but.grid(row=row_position, column=col_position)
+                newitem.set_button(but)
+                newitem.setimagelbl(but.image)
+                col_position+=1
 
         self.master.title("Kevin's Fried Rice Store")
         restore(self)
-        zuc = tk.Button(self, command=lambda:[shop("Zucchini"),press()])
-        image = ImageTk.PhotoImage(file="zuc.gif")
-        zuc.config(image=image, width=200, height=200, bg="black")
-        zuc.image = image
-        zuc.grid(row=2, column=1)
-
-        onion = tk.Button(self, command=lambda:[shop("Onion"),press()])
-        image = ImageTk.PhotoImage(file="onion.gif")
-        onion.config(image=image, width=200, height=200, bg="black")
-        onion.image = image
-        onion.grid(row=2, column=2)
-
-        chick = tk.Button(self, command=lambda: [shop("Chicken"),press()])
-        image = ImageTk.PhotoImage(file="chicken.gif")
-        chick.config(image=image, width=200, height=200, bg="black")
-        chick.image = image
-        chick.grid(row=2, column=3)
-
-        egg = tk.Button(self, command=lambda:[shop("Egg"),press()])
-        image = ImageTk.PhotoImage(file="egg.gif")
-        egg.config(image=image, width=200, height=200, bg="black")
-        egg.image = image
-        egg.grid(row=2, column=4)
-
-        gonion = tk.Button(self, command=lambda: [shop("Green Onion"), press()])
-        image = ImageTk.PhotoImage(file="gonion.gif")
-        gonion.config(image=image, width=200, height=200, bg="black")
-        gonion.image = image
-        gonion.grid(row=3, column=1)   
-
-        mush = tk.Button(self, command=lambda: [shop("Mushroom"), press()])
-        image = ImageTk.PhotoImage(file="mush.gif")
-        mush.config(image=image, width=200, height=200, bg="black")
-        mush.image = image
-        mush.grid(row=3, column=2)
-
-        redppr = tk.Button(self, command=lambda: [shop("Red Peppers"), press()])
-        image = ImageTk.PhotoImage(file="redppr.gif")
-        redppr.config(image=image, width=200, height=200, bg="black")
-        redppr.image = image
-        redppr.grid(row=3, column=3)
-
-        rice = tk.Button(self, command=lambda: [shop("Rice"), press()])
-        image = ImageTk.PhotoImage(file="rice.gif")
-        rice.config(image=image, width=200, height=200, bg="black")
-        rice.image = image
-        rice.grid(row=3, column=4)
-
-        soy = tk.Button(self, command=lambda: [shop("Soy Sauce"), press()])
-        image = ImageTk.PhotoImage(file="soy.gif")
-        soy.config(image=image, width=200, height=200, bg="black")
-        soy.image = image
-        soy.grid(row=4, column=1)
-
-        carrot = tk.Button(self, command=lambda: [shop("Carrot"), press()])
-        image = ImageTk.PhotoImage(file="carrot.gif")
-        carrot.config(image=image, width=200, height=200, bg="black")
-        carrot.image = image
-        carrot.grid(row=4, column=2)
-
-        garlic = tk.Button(self, command=lambda: [shop("Garlic"), press()])
-        image = ImageTk.PhotoImage(file="garlic.gif")
-        garlic.config(image=image, width=200, height=200, bg="black")
-        garlic.image = image
-        garlic.grid(row=4, column=3)
-
-        peas = tk.Button(self, command=lambda: [shop("Peas"), press()])
-        image = ImageTk.PhotoImage(file="peas.gif")
-        peas.config(image=image, width=200, height=200, bg="black")
-        peas.image = image
-        peas.grid(row=4, column=4)
+        make_items()
+        make_item_buttons()
 
         sc = tk.Text(self, height=13, width=30)
         sc.insert(tk.END, getList(self))
         sc.grid(row=2, column=5)
 
-        ar = tk.Button(self, text="Click to start \r Removing", bg="darkblue", fg="white", font='Helvetica 18 bold', width=15, height=5, command=lambda: [addpress()])
+        ar = tk.Button(self, text="Click to start \r Removing", bg="darkblue", fg="white",
+                       font='Helvetica 18 bold', width=10, height=5, command=lambda: [addpress()])
         ar.grid(row=3, column=5)
 
-        quit = tk.Button(self, text="QUIT", fg="black", bg="red", font='Helvetica 18 bold', command=lambda:[save(self),self.master.destroy()], width=10, height=5)
+
+        quit = tk.Button(self, text="QUIT", fg="black", bg="red", font='Helvetica 18 bold', command=lambda: [
+                         save(self), self.master.destroy()], width=10, height=5)
         quit.grid(row=4, column=5)
 
         self.pack()
 
 
 def getList(self):
-    items='Your Shopping Cart Contains: \n'
-    for item in self.shoppinglist:
-        items+= item + "\n"
+    items = 'Your Shopping Cart Contains: \n'
+
+    for item in set(self.shoppinglist):
+        items += item + " [" + str(self.shoppinglist.count(item)) + "] \n"
     return items
+
 
 def main():
     root = Tk()
@@ -138,12 +103,14 @@ def main():
     app = ShoppingCart()
     root.mainloop()
 
+
 def restore(self):
     if path.isfile("save.json"):
         with open("save.json", "r") as save_file:
             data = json.load(save_file)
             self.shoppinglist = data
         pass
+
 
 def save(self):
     with open("save.json", "w") as save_file:
