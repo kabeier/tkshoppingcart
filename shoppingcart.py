@@ -82,7 +82,7 @@ class ShoppingCart(Frame):
                        font='Helvetica 18 bold', width=10, height=5, command=lambda: [addpress()])
         ar.grid(row=3, column=5)
 
-        quit = tk.Button(self, text="QUIT", fg="black", bg="red", font='Helvetica 18 bold', command=lambda: [
+        quit = tk.Button(self, text="QUIT & SAVE", fg="black", bg="red", font='Helvetica 18 bold', command=lambda: [
                          save(self), self.master.destroy()], width=10, height=5)
         quit.grid(row=4, column=5)
 
@@ -100,9 +100,9 @@ def getList(self):
         total += self.shoppinglist.count(item)*price
         items += f"{item} [{self.shoppinglist.count(item)}] ${price*self.shoppinglist.count(item)} \n"
     items+="-"*25 +"\n"
-    items+=f'Your total is ${total:,.2f}'
-
-
+    items+=f'Subtotal: ${total:,.2f} \n'
+    items += f'Tax: ${total*.02:,.2f} \n'
+    items += f'Total: ${total+total*.02:,.2f}'
     return items
 
 
